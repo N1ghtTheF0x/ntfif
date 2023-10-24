@@ -6,11 +6,12 @@ namespace N1ghtTheF0x
 {
     namespace ImageFormat
     {
-        Header::Header(Width width,Height height,Depth depth)
+        Header::Header(Width width,Height height,Depth depth,ComponentType componentType)
         {
             _width = width;
             _height = height;
             _depth = depth;
+            _component_type = componentType;
             _version = N1GHTTHEF0X_IMAGEFORMAT_HEADER_VERSION;
         }
         Header::Header()
@@ -29,6 +30,17 @@ namespace N1ghtTheF0x
             stream->read((char*)&_width,sizeof(_width));
             stream->read((char*)&_height,sizeof(_height));
             stream->read((char*)&_depth,sizeof(_depth));
+            stream->read((char*)&_component_type,sizeof(_component_type));
+            delete signature;
+        }
+        void Header::write(std::ofstream *stream)
+        {
+            stream->write(N1GHTTHEF0X_IMAGEFORMAT_HEADER_SIGNATURE,N1GHTTHEF0X_IMAGEFORMAT_HEADER_SIGNATURE_LENGTH);
+            stream->write((char*)&_version,sizeof(_version));
+            stream->write((char*)&_width,sizeof(_width));
+            stream->write((char*)&_height,sizeof(_height));
+            stream->write((char*)&_depth,sizeof(_depth));
+            stream->write((char*)&_component_type,sizeof(_component_type));
         }
         void Header::read(std::fstream *stream)
         {
@@ -39,6 +51,17 @@ namespace N1ghtTheF0x
             stream->read((char*)&_width,sizeof(_width));
             stream->read((char*)&_height,sizeof(_height));
             stream->read((char*)&_depth,sizeof(_depth));
+            stream->read((char*)&_component_type,sizeof(_component_type));
+            delete signature;
+        }
+        void Header::write(std::fstream *stream)
+        {
+            stream->write(N1GHTTHEF0X_IMAGEFORMAT_HEADER_SIGNATURE,N1GHTTHEF0X_IMAGEFORMAT_HEADER_SIGNATURE_LENGTH);
+            stream->write((char*)&_version,sizeof(_version));
+            stream->write((char*)&_width,sizeof(_width));
+            stream->write((char*)&_height,sizeof(_height));
+            stream->write((char*)&_depth,sizeof(_depth));
+            stream->write((char*)&_component_type,sizeof(_component_type));
         }
         Width Header::width() const
         {
@@ -55,6 +78,10 @@ namespace N1ghtTheF0x
         Version Header::version() const
         {
             return _version;
+        }
+        ComponentType Header::componentType() const
+        {
+            return _component_type;
         }
         bool Header::valid() const
         {

@@ -1,7 +1,6 @@
 #ifndef __N1GHTTHEF0X_IMAGEFORMAT_PIXEL_HPP
 #define __N1GHTTHEF0X_IMAGEFORMAT_PIXEL_HPP
 
-#include <stdint.h>
 #include <fstream>
 #include <vector>
 
@@ -12,6 +11,10 @@ namespace N1ghtTheF0x
     namespace ImageFormat
     {
         #define N1GHTTHEF0X_IMAGEFORMAT_PIXEL_SIZE sizeof(Component) * 4
+        /**
+         * @brief Represents a pixel in a Image
+         * 
+         */
         class Pixel
         {
         private:
@@ -20,10 +23,19 @@ namespace N1ghtTheF0x
             Component _blue;
             Component _alpha;
         public:
+            /**
+             * @brief Construct a new Pixel object from `red`, `green`, `blue` and `alpha`. Keep in mind that they have to be `uint64_t`!
+             */
             Pixel(Component red,Component green,Component blue,Component alpha = UINT64_MAX);
+            /**
+             * @brief Construct a new Pixel object that is opaque black (#000000FF)
+             * 
+             */
             Pixel();
-            void read(Depth depth,std::ifstream *stream);
-            void read(Depth depth,std::fstream *stream);
+            void read(ComponentType cType,std::ifstream *stream);
+            void read(ComponentType cType,std::fstream *stream);
+            void write(ComponentType cType,std::ofstream *stream);
+            void write(ComponentType cType,std::fstream *stream);
             Component red() const;
             Component green() const;
             Component blue() const;
@@ -33,9 +45,11 @@ namespace N1ghtTheF0x
             void setBlue(Component value);
             void setAlpha(Component value);
         };
-        typedef const Pixel ReadonlyPixel;
+        /**
+         * @brief Contains all the pixels in a Image
+         * 
+         */
         typedef std::vector<Pixel> Pixels;
-        typedef std::vector<ReadonlyPixel> ReadonlyPixels;
     }
 }
 

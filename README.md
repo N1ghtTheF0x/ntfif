@@ -12,7 +12,8 @@ struct HeaderVersion1
     uint8_t version; // Version of Image Format
     uint64_t width; // Width of Image
     uint64_t height; // Height of Image
-    uint64_t depth; // Depth of Image (The size of the components Red, Green, Blue, Alpha)
+    uint64_t depth; // Color depth of Image
+    uint64_t componentSize; // The size of the components Red, Green, Blue, Alpha
 }
 
 struct Pixel

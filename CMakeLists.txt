@@ -14,6 +14,7 @@ add_library(ntfif
     source/header.cpp
     source/pixel.cpp
     source/file.cpp
+    source/utils.cpp
 )
 
 target_include_directories(ntfif PRIVATE include)

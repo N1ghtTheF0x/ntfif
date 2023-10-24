@@ -4,16 +4,29 @@
 
 int readFile(const char* path)
 {
-    std::ifstream file(path,std::ios::binary);
-    N1ghtTheF0x::ImageFormat::Header header(file);
-    if(header.hasError())
+    std::fstream stream(path,std::ios::binary);
+    if(!stream.good())
     {
-        std::cerr << "There was a parse Error!" << std::endl;
+        std::cerr << "Couldn't read " << path << std::endl;
+        return EXIT_FAILURE;
+    }
+    N1ghtTheF0x::ImageFormat::File file(&stream);
+    auto header = file.header();
+    if(!header.valid())
+    {
+        std::cerr << "Header not valid!" << std::endl;
         return EXIT_FAILURE;
     }
     std::cout << "Version: " << header.version() << std::endl;
     std::cout << "Size: " << header.width() << "x" << header.height() << std::endl;
     std::cout << "Depth: " << header.depth() << std::endl;
+    std::cout << "ComponentType: " << (uint8_t)header.componentType() << std::endl;
+    for(N1ghtTheF0x::ImageFormat::Height y = 0;y < header.height();y++)
+        for(N1ghtTheF0x::ImageFormat::Width x = 0;x < header.width();x++)
+        {
+            auto pixel = file.pixelAt(x,y);
+            std::cout << "(" << pixel.red() << ", " << pixel.green() << ", " << pixel.blue() << ")" << std::endl;
+        }
     return EXIT_SUCCESS;
 }
 

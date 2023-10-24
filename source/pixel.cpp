@@ -18,19 +18,37 @@ namespace N1ghtTheF0x
             _blue = 0;
             _alpha = UINT64_MAX;
         }
-        void Pixel::read(Depth depth,std::ifstream *stream)
+        void Pixel::read(ComponentType cType,std::ifstream *stream)
         {
+            size_t depth = getComponentTypeSize(cType);
             stream->read((char*)&_red,depth);
             stream->read((char*)&_green,depth);
             stream->read((char*)&_blue,depth);
             stream->read((char*)&_alpha,depth);
         }
-        void Pixel::read(Depth depth,std::fstream *stream)
+        void Pixel::write(ComponentType cType,std::ofstream *stream)
         {
+            size_t depth = getComponentTypeSize(cType);
+            stream->write((char*)&_red,depth);
+            stream->write((char*)&_green,depth);
+            stream->write((char*)&_blue,depth);
+            stream->write((char*)&_alpha,depth);
+        }
+        void Pixel::read(ComponentType cType,std::fstream *stream)
+        {
+            size_t depth = getComponentTypeSize(cType);
             stream->read((char*)&_red,depth);
             stream->read((char*)&_green,depth);
             stream->read((char*)&_blue,depth);
             stream->read((char*)&_alpha,depth);
+        }
+        void Pixel::write(ComponentType cType,std::fstream *stream)
+        {
+            size_t depth = getComponentTypeSize(cType);
+            stream->write((char*)&_red,depth);
+            stream->write((char*)&_green,depth);
+            stream->write((char*)&_blue,depth);
+            stream->write((char*)&_alpha,depth);
         }
         Component Pixel::red() const
         {
